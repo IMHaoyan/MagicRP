@@ -17,14 +17,16 @@ struct GI
 float3 SampleLightMap(float2 lightMapUV)
 {
     #if defined(LIGHTMAP_ON)
-    return SampleSingleLightmap(TEXTURE2D_ARGS(unity_Lightmap, samplerunity_Lightmap),
-    lightMapUV, float4(1, 1, 0, 0),
+    return SampleSingleLightmap(
+        TEXTURE2D_ARGS(unity_Lightmap, samplerunity_Lightmap),
+        lightMapUV,
+        float4(1, 1, 0, 0),
     #if defined(UNITY_LIGHTMAP_FULL_HDR)
-    false,
+        false,
     #else
-    true,
+        true,
     #endif
-    float4(LIGHTMAP_HDR_MULTIPLIER, LIGHTMAP_HDR_EXPONENT, 0.0, 0.0)
+        float4(LIGHTMAP_HDR_MULTIPLIER, LIGHTMAP_HDR_EXPONENT, 0.0, 0.0)
     );
     #else
     return 0.0;

@@ -33,7 +33,7 @@ struct Attributes
 struct Varyings
 {
     float4 positionCS : SV_POSITION;
-    float2 uv : TEXCOORD0;
+    float2 baseUV : TEXCOORD0;
     float3 normalWS : TEXCOORD1;
     float3 positionWS : TEXCOORD2;
     GI_VARYINGS_DATA
@@ -47,7 +47,7 @@ Varyings LitPassVertex(Attributes input)
     UNITY_TRANSFER_INSTANCE_ID(input, output);
     TRANSFER_GI_DATA(input, output);
 
-    output.uv = TransformBaseUV(input.baseUV);
+    output.baseUV = TransformBaseUV(input.baseUV);
     output.positionWS = TransformObjectToWorld(input.positionOS);
     output.normalWS = TransformObjectToWorldNormal(input.normalOS);
     output.positionCS = TransformWorldToHClip(output.positionWS);
@@ -58,9 +58,9 @@ half4 LitPassFragment(Varyings input) : SV_TARGET
 {
     UNITY_SETUP_INSTANCE_ID(input);
 
-    half4 base = GetBase(input.uv);
+    half4 base = GetBase(input.baseUV);
     #ifdef _CLIPPING
-    clip(base.a - GetCutoff(input.uv));
+    clip(base.a - GetCutoff(input.baseUV));
     #endif
 
     Surface surface;
@@ -70,8 +70,8 @@ half4 LitPassFragment(Varyings input) : SV_TARGET
     surface.depth = -TransformWorldToView(input.positionWS).z;
     surface.alpha = base.a;
     surface.normal = normalize(input.normalWS);
-    surface.metallic = GetMetallic(input.uv);
-    surface.smoothness = GetSmoothness(input.uv);
+    surface.metallic = GetMetallic(input.baseUV);
+    surface.smoothness = GetSmoothness(input.baseUV);
     surface.dither = InterleavedGradientNoise(input.positionCS.xy, 0);
 
     #if defined(_PREMULTIPLY_ALPHA)

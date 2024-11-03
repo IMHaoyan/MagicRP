@@ -19,10 +19,10 @@ Shader "MagicRP/Lit"
     }
     SubShader
     {
-		HLSLINCLUDE
-		#include "../ShaderLibrary/Common.hlsl"
-		#include "LitInput.hlsl"
-		ENDHLSL
+        HLSLINCLUDE
+        #include "../ShaderLibrary/Common.hlsl"
+        #include "LitInput.hlsl"
+        ENDHLSL
 
         Pass
         {
@@ -67,7 +67,7 @@ Shader "MagicRP/Lit"
             #pragma fragment ShadowCasterPassFragment
             ENDHLSL
         }
-        /*
+        
         Pass 
         {
         	Tags 
@@ -82,7 +82,7 @@ Shader "MagicRP/Lit"
         	#pragma fragment MetaPassFragment
         	#include "MetaPass.hlsl"
         	ENDHLSL
-        }*/
+        }
     }
     CustomEditor "MagicRPShaderGUI"
 }
